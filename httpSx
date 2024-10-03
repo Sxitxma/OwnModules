@@ -51,7 +51,7 @@ local httpSx = {}
 
 LoadModule("json") -- ask Sxitxma#1000 to get the LoadModule function
 -- or use this:
-json = load("json") -- get the source code from here: https://raw.githubusercontent.com/rxi/json.lua/master/json.lua
+-- json = load("json") -- get the source code from here: https://raw.githubusercontent.com/rxi/json.lua/master/json.lua
 
 
 
