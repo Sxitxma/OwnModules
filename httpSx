@@ -1,0 +1,100 @@
+--
+-- httpSx.lua
+--
+-- Copyright (c) 2024 Sxitxma
+--
+-- Permission is hereby granted, free of charge, to any person obtaining a copy of
+-- this software and associated documentation files (the "Software"), to deal in
+-- the Software without restriction, including without limitation the rights to
+-- use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+-- of the Software, and to permit persons to whom the Software is furnished to do
+-- so, subject to the following conditions:
+--
+-- The above copyright notice and this permission notice shall be included in all
+-- copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+-- SOFTWARE.
+--
+
+
+
+--[[
+
+MADE BY SXITXMA
+
+cipherSuite
+code
+content
+contentLength
+contentType
+date
+expiration
+headers
+lastModified
+message
+requestMethod
+url
+usingProxy
+
+--]]
+
+
+
+
+local httpSx = {}
+
+LoadModule("json") -- ask Sxitxma#1000 to get the LoadModule function
+-- or use this:
+json = load("json") -- get the source code from here: https://raw.githubusercontent.com/rxi/json.lua/master/json.lua
+
+
+
+function httpSx.post(URL, Headers, Payload)
+  if not URL or URL == nil then os.exit(print("No Url entered")) end
+  if not Payload or Payload == nil then Payload = "post1=val2&post3=val4" end
+  if type(Payload) == "table" and Headers == nil then Headers = {["Content-Type"] = "application/json"}
+  elseif type(Payload) ~= "table" then Headers = nil end
+
+      function buildQuery(url, query)
+        query = query or {}
+        local query_string = ''
+        for k, v in pairs(query) do
+            query_string = query_string .. k .. '=' .. tostring(v) .. '&'
+        end
+        query_string = query_string:sub(1, -2)
+        return url .. '?' .. query_string
+    end
+    
+    local query = {
+        wait = false
+    }
+
+    if type(Payload) == "table" and Payload ~= "post1=val2&post3=val4" then Payload = json.encode(Payload) end
+    
+    local response = gg.makeRequest(buildQuery(URL, query), Headers, Payload)
+    return response
+end
+
+
+
+function httpSx.get(URL, Headers)
+  if not URL or URL == nil then os.exit(print("No Url entered")) end
+  if not Headers or Headers == nil then Headers = {["Content-Type"] = "application/json"} end
+
+  local response = gg.makeRequest(URL, Headers)
+  gg.sleep(1000)
+
+  return response
+end
+
+
+
+
+
+return httpSx
